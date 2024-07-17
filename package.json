@@ -1,0 +1,16 @@
+{
+  "name": "@steedos/oidc-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/steedos/steedos-oidc-server.git",
+  "author": "孙浩林 <sunhaolin@steedos.com>",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "4.19.2",
+    "helmet": "5.1.1",
+    "lodash": "^4.17.21",
+    "mongodb": "^4.3.0",
+    "oidc-provider": "7.14.3"
+  }
+}
