@@ -3,6 +3,10 @@ import { nanoid } from 'nanoid';
 const store = new Map();
 const logins = new Map();
 
+import { checkPassword } from '../utils/encryption.js';
+
+const { default: db } = await import('../adapters/mongodb.js');
+
 class Account {
   constructor(id, profile) {
     this.accountId = id || nanoid();
@@ -71,20 +75,35 @@ class Account {
     return logins.get(id);
   }
 
-  static async findByLogin(login) {
-    if (!logins.get(login)) {
-      logins.set(login, new Account(login));
-    }
+  static async findByLogin(login, password) {
+    // if (!logins.get(login)) {
+    //   logins.set(login, new Account(login));
+    // }
 
-    return logins.get(login);
+    // return logins.get(login);
+
+    // 根据login和password去users中鉴权
+
+    const user = await db.findUserByLogin(login)
+
+    if (!user) {
+      return;
+    }
+    const match = await checkPassword(password, user.services.password.bcrypt)
+    if (match) {
+      return new Account(user._id, user)
+    }
   }
 
   static async findAccount(ctx, id, token) { // eslint-disable-line no-unused-vars
     // token is a reference to the token used for which a given account is being loaded,
     //   it is undefined in scenarios where account claims are returned from authorization endpoint
     // ctx is the koa request context
-    if (!store.get(id)) new Account(id); // eslint-disable-line no-new
-    return store.get(id);
+    // if (!store.get(id)) new Account(id); // eslint-disable-line no-new
+    // return store.get(id);
+    const user = await db.findUserById(id)
+
+    return new Account(id, user);
   }
 }
 
