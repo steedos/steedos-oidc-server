@@ -129,6 +129,25 @@ class MongoAdapter {
     const connection = await MongoClient.connect(process.env.MONGODB_URI);
     DB = connection.db(connection.s.options.dbName);
   }
+
+
+  // static async findUserByLogin(login) {
+  //   const user = await this.coll("users").find({
+  //     $or: [{ "username": login }, { "emails.address": login }, { "mobile": login }]
+  //   }).limit(1).next();
+
+  //   if (!user) return undefined;
+  //   return user;
+  // }
+
+  // static async findUserById(id) {
+  //   const user = await this.coll("users").find({
+  //     _id: id
+  //   }).limit(1).next();
+
+  //   if (!user) return undefined;
+  //   return user;
+  // }
 }
 
 export default MongoAdapter;

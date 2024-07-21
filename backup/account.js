@@ -3,11 +3,15 @@ import { nanoid } from 'nanoid';
 const store = new Map();
 const logins = new Map();
 
+import { checkPassword } from '../utils/encryption.js';
+
+const { default: db } = await import('../adapters/mongodb.js');
+
 class Account {
   constructor(id, profile) {
-    this.accountId = id || nanoid();
+    this._id = id || nanoid();
     this.profile = profile;
-    store.set(this.accountId, this);
+    store.set(this._id, this);
   }
 
   /**
@@ -21,7 +25,7 @@ class Account {
   async claims(use, scope) { // eslint-disable-line no-unused-vars
     if (this.profile) {
       return {
-        sub: this.accountId, // it is essential to always return a sub claim
+        sub: this._id, // it is essential to always return a sub claim
         email: this.profile.email,
         email_verified: this.profile.email_verified,
         family_name: this.profile.family_name,
@@ -32,7 +36,7 @@ class Account {
     }
 
     return {
-      sub: this.accountId, // it is essential to always return a sub claim
+      sub: this._id, // it is essential to always return a sub claim
 
       address: {
         country: '000',
@@ -71,12 +75,24 @@ class Account {
     return logins.get(id);
   }
 
-  static async findByLogin(login) {
+  static async findByLogin(login, password) {
     if (!logins.get(login)) {
       logins.set(login, new Account(login));
     }
 
     return logins.get(login);
+
+    // 根据login和password去users中鉴权
+
+    const user = await db.findUserByLogin(login)
+
+    if (!user) {
+      return;
+    }
+    const match = await checkPassword(password, user.services.password.bcrypt)
+    if (match) {
+      return user
+    }
   }
 
   static async findAccount(ctx, id, token) { // eslint-disable-line no-unused-vars
@@ -85,6 +101,11 @@ class Account {
     // ctx is the koa request context
     if (!store.get(id)) new Account(id); // eslint-disable-line no-new
     return store.get(id);
+    const user = await db.findUserById(id)
+
+    const account = new Account(id, user)
+
+    return account;
   }
 }
 
