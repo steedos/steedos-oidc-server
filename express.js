@@ -2,7 +2,7 @@
  * @Author: 孙浩林 sunhaolin@steedos.com
  * @Date: 2024-07-16 20:06:26
  * @LastEditors: baozhoutao@steedos.com
- * @LastEditTime: 2024-07-21 16:40:36
+ * @LastEditTime: 2024-07-21 17:05:05
  * @FilePath: /steedos-oidc-server/express.js
  * @Description:
  */
@@ -40,6 +40,8 @@ app.use(helmet({
     directives,
   },
 }));
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 if(DEBUG == 'true'){
