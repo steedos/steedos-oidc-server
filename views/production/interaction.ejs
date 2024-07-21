@@ -1,0 +1,40 @@
+<div class="flex min-h-full items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+  <div class="w-full max-w-sm space-y-10">
+    <div>
+      <img class="mx-auto h-20 w-auto rounded-full" src="https://3080-dannyavila-librechat-deuhh9kcbr4.ws-us115.gitpod.io/images/6698b6df5cb9c4832ed155c3/e1ed90e1-2f13-4c8f-b856-0ead10ab87b0__clipboard_1721544275258_image.png" alt="Your Company">
+      <h2 class="mt-2 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">授权 <%= client.clientName %></h2>
+    </div>
+    <div class="space-y-6" autocomplete="off" action="/interaction/<%= uid %>/login" method="post" >
+        <!-- Scopes -->
+        <% missingOIDCScope = new Set(details.missingOIDCScope); missingOIDCScope.delete('openid'); missingOIDCScope.delete('offline_access') %>
+        <% if (missingOIDCScope.size) { %>
+          <div class="mb-4">
+            <div class="font-semibold text-gray-800"><%= client.clientName %>想要访问您的个人用户数据: </div>
+            <ul class="ml-4 list-disc">
+              <% missingOIDCScope.forEach((scope) => { %>
+                <li class="text-gray-600">
+                  <% if (scope === 'openid') { %>
+                    您的身份信息。
+                  <% } else if (scope === 'profile') { %>
+                    您的基本个人资料信息。
+                  <% } else if (scope === 'email') { %>
+                    您的电子邮件地址。
+                  <% } else { %>
+                    其他权限说明。
+                  <% } %>
+                </li>
+              <% }) %>
+            </ul>
+          </div>
+        <% } %>
+  
+        <div>
+          <form autocomplete="off" action="/interaction/<%= uid %>/confirm" method="post" class="mt-6">
+            <div class="flex justify-between items-center border-t border-gray-200 pt-4">
+              <button type="submit" class="w-full bg-green-600 text-white font-bold py-2 rounded-md hover:bg-green-700 transition duration-200">授权 <%= client.clientName %></button>
+            </div>
+          </form>
+        </div>
+      </div>
+  </div>
+</div>

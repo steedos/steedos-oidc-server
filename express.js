@@ -1,8 +1,8 @@
 /*
  * @Author: 孙浩林 sunhaolin@steedos.com
  * @Date: 2024-07-16 20:06:26
- * @LastEditors: 孙浩林 sunhaolin@steedos.com
- * @LastEditTime: 2024-07-21 13:23:13
+ * @LastEditors: baozhoutao@steedos.com
+ * @LastEditTime: 2024-07-21 16:40:36
  * @FilePath: /steedos-oidc-server/express.js
  * @Description:
  */
@@ -27,7 +27,7 @@ import routes from './routes/express.js';
 
 const __dirname = dirname(import.meta.url);
 
-const { PORT = 3000, ISSUER = `http://localhost:${PORT}` } = process.env;
+const { PORT = 3000, ISSUER = `http://localhost:${PORT}`, DEBUG } = process.env;
 configuration.findAccount = Account.findAccount;
 
 const app = express();
@@ -41,7 +41,13 @@ app.use(helmet({
   },
 }));
 
-app.set('views', path.join(__dirname, 'views'));
+
+if(DEBUG == 'true'){
+  app.set('views', path.join(__dirname, 'views', 'debug'));
+}else{
+  app.set('views', path.join(__dirname, 'views', 'production'));
+}
+
 app.set('view engine', 'ejs');
 
 let server;
