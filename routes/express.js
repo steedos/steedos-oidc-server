@@ -6,7 +6,7 @@ import { inspect } from 'node:util';
 import isEmpty from 'lodash/isEmpty.js';
 import { urlencoded } from 'express'; // eslint-disable-line import/no-unresolved
 
-import Account from '../support/account.js';
+import Account from '../support/account_fetch.js';
 import { errors } from 'oidc-provider'; // from 'oidc-provider';
 
 const body = urlencoded({ extended: false });

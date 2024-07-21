@@ -21,7 +21,7 @@ import helmet from 'helmet';
 
 import Provider from 'oidc-provider'; // from 'oidc-provider';
 
-import Account from './support/account.js';
+import Account from './support/account_fetch.js';
 import configuration from './support/configuration.js';
 import routes from './routes/express.js';
 
@@ -42,9 +42,9 @@ app.use(helmet({
 }));
 
 
-if(DEBUG == 'true'){
+if (DEBUG == 'true') {
   app.set('views', path.join(__dirname, 'views', 'debug'));
-}else{
+} else {
   app.set('views', path.join(__dirname, 'views', 'production'));
 }
 
