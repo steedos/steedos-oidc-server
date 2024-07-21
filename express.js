@@ -21,7 +21,7 @@ import helmet from 'helmet';
 
 import Provider from 'oidc-provider'; // from 'oidc-provider';
 
-import Account from './support/account_fetch.js';
+import Account from './support/account_api.js';
 import configuration from './support/configuration.js';
 import routes from './routes/express.js';
 
