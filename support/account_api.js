@@ -7,6 +7,8 @@ import { checkPassword } from '../utils/encryption.js';
 
 const { default: db } = await import('../adapters/mongodb.js');
 
+import * as user from '../utils/user.js';
+
 class Account {
   constructor(id, profile) {
     this.accountId = id || nanoid();
@@ -84,15 +86,11 @@ class Account {
 
     // 根据login和password去users中鉴权
 
-    const user = await db.findUserByLogin(login)
+    const userDoc = await user.login(login, password)
 
-    if (!user) {
-      return;
-    }
-    const match = await checkPassword(password, user.services.password.bcrypt)
-    if (match) {
-      return new Account(user._id, user)
-    }
+    if (!userDoc) throw new Error('User not found')
+
+    return new Account(userDoc._id, userDoc)
   }
 
   static async findAccount(ctx, id, token) { // eslint-disable-line no-unused-vars
@@ -101,9 +99,11 @@ class Account {
     // ctx is the koa request context
     // if (!store.get(id)) new Account(id); // eslint-disable-line no-new
     // return store.get(id);
-    const user = await db.findUserById(id)
+    const userDoc = await user.getBydId(id)
 
-    return new Account(id, user);
+    if (!userDoc) throw new Error('User not found')
+
+    return new Account(userDoc._id, userDoc)
   }
 }
 
