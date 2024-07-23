@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  steedos-oidc-server:
+    build: 
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    image: steedos/steedos-oidc-server:latest
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../.env
+      - ../.env.local
