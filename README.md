@@ -2,7 +2,7 @@
  * @Author: 孙浩林 sunhaolin@steedos.com
  * @Date: 2024-07-17 16:32:41
  * @LastEditors: 孙浩林 sunhaolin@steedos.com
- * @LastEditTime: 2024-07-23 14:46:59
+ * @LastEditTime: 2024-07-23 14:49:11
  * @FilePath: /steedos-oidc-server/README.md
  * @Description: 
 -->
@@ -58,5 +58,5 @@ STEEDOS_OIDC_SERVER_JWT_SECRET=
 ## 启动项目
 
 ```markdown
-node express.js
+node index.js
 ```
