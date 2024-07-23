@@ -8,6 +8,9 @@
  */
 
 // import config from '../configuration.json' assert { type: 'json' };
+import dotenvFlow from 'dotenv-flow';
+dotenvFlow.config();
+
 
 export default {
   clients: [
