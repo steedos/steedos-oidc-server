@@ -4,6 +4,9 @@
   "main": "index.js",
   "repository": "https://github.com/steedos/steedos-oidc-server.git",
   "author": "孙浩林 <sunhaolin@steedos.com>",
+  "scripts": {
+    "postbuild": "chmod +x bin/postbuild.sh && ./bin/postbuild.sh"
+  },
   "license": "MIT",
   "dependencies": {
     "axios": "^1.7.2",
