@@ -7,20 +7,21 @@
  * @Description:
  */
 
-import config from '../configuration.json' assert { type: 'json' };
+// import config from '../configuration.json' assert { type: 'json' };
 
 export default {
-  clients: config.clients ? config.clients : [
+  clients: [
     {
       // client_id: 'oidcCLIENT',
       // client_secret: '...',
       // grant_types: ['refresh_token', 'authorization_code'],
       // redirect_uris: ['http://sso-client.dev/providers/7/open_id', 'http://sso-client.dev/providers/8/open_id'],
-      client_id: 'oidc_client',
-      client_secret: 'a_different_secret',
+      client_id: process.env.CHATS_BUILDER6_CLIENT_ID,
+      client_secret: process.env.CHATS_BUILDER6_CLIENT_SECRET,
+      client_name: process.env.CHATS_BUILDER6_CLIENT_NAME,
       grant_types: ['authorization_code'],
       response_types: ['code'],
-      redirect_uris: ['http://localhost:3001/cb'],
+      redirect_uris: process.env.CHATS_BUILDER6_REDIRECT_URIS.split(","),
     },
   ],
   interactions: {
