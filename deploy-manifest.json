@@ -47,7 +47,7 @@
         {
             "name": "default",
             "runtime": "nodejs18.x",
-            "entrypoint": "express.js"
+            "entrypoint": "index.js"
         }
     ]
 }
