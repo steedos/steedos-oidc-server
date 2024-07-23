@@ -4,6 +4,7 @@ rm -rf ./.amplify-hosting
 
 mkdir -p ./.amplify-hosting/compute
 
+cp ./README.md ./.amplify-hosting/compute/default
 cp -r ./routes ./.amplify-hosting/compute/default
 cp -r ./node_modules ./.amplify-hosting/compute/default
 cp -r ./utils ./.amplify-hosting/compute/default
