@@ -2,12 +2,15 @@
  * @Author: 孙浩林 sunhaolin@steedos.com
  * @Date: 2024-07-16 20:06:26
  * @LastEditors: 孙浩林 sunhaolin@steedos.com
- * @LastEditTime: 2024-07-16 22:14:31
- * @FilePath: /node-oidc-provider/example/support/configuration.js
+ * @LastEditTime: 2024-07-23 10:50:32
+ * @FilePath: /steedos-oidc-server/support/configuration.js
  * @Description:
  */
+
+import config from '../configuration.json' assert { type: 'json' };
+
 export default {
-  clients: [
+  clients: config.clients ? config.clients : [
     {
       // client_id: 'oidcCLIENT',
       // client_secret: '...',

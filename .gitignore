@@ -46,3 +46,4 @@ types/*.js
 
 .env.local
 .DS_Store
+configuration.json
