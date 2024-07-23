@@ -2,7 +2,7 @@
  * @Author: 孙浩林 sunhaolin@steedos.com
  * @Date: 2024-07-21 17:34:18
  * @LastEditors: 孙浩林 sunhaolin@steedos.com
- * @LastEditTime: 2024-07-22 15:13:40
+ * @LastEditTime: 2024-07-23 10:31:08
  * @FilePath: /steedos-oidc-server/utils/user.js
  * @Description: 
  */
@@ -70,7 +70,7 @@ export const login = async (login, password) => {
  * @param {String} userId 
  * @returns user
  */
-export const getBydId = async (userId) => {
+export const getById = async (userId) => {
     const secret = process.env.STEEDOS_OIDC_SERVER_JWT_SECRET // 密钥
     const options = { expiresIn: 30 } // 30秒有效
     const token = jwt.sign({
@@ -86,4 +86,73 @@ export const getBydId = async (userId) => {
     console.log(result.data)
 
     return result.data.data
+}
+
+/**
+ * 
+ * @param {String} name 
+ * @param {String} login
+ * @param {String} password 
+ * @returns 
+ * {
+        "_id": "669f083f7e328015243621ba",
+        "name": "s4",
+        "locale": "zh-cn",
+        "verifyCode": "",
+        "spaceId": "",
+        "services": {
+            "password": {
+                "bcrypt": "$2a$10$a/UYgb6ZUsxv4Oc.v2/jbOvzoGCWGyAjk2XrCOV37huGWUR2JWIBG"
+            }
+        },
+        "created": "2024-07-23T01:32:47.921Z",
+        "modified": "2024-07-23T01:32:47.921Z",
+        "email": "s4@s.com",
+        "email_verified": null,
+        "emails": [
+            {
+                "address": "s4@s.com",
+                "verified": null
+            }
+        ],
+        "steedos_id": "669f083f7e328015243621ba",
+        "id": "669f083f7e328015243621ba"
+    }
+ */
+export const register = async (name, login, password) => {
+    const url = absoluteUrl(consts.REGISTER_URL)
+
+    const body = {
+        "password": hashPassword(password),
+        "name": name,
+        "locale": "zh-cn",
+        "verifyCode": "",
+        "spaceId": "", // 没有spaceId
+        "email": login
+    }
+
+    const result = await axios.post(url, body)
+
+    console.log(result.data)
+
+    return result.data.user
+}
+
+/**
+ * 
+ * @param {*} email 
+ * @returns null
+ */
+export const forgetPassword = async (email) => {
+    const url = absoluteUrl(consts.RESET_PASSWORD_BY_EMAIL_URL)
+
+    const body = {
+        "email": email
+    }
+
+    const result = await axios.post(url, body)
+
+    console.log(result.data)
+
+    return result.data
 }

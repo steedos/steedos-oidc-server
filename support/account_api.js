@@ -99,7 +99,7 @@ class Account {
     // ctx is the koa request context
     // if (!store.get(id)) new Account(id); // eslint-disable-line no-new
     // return store.get(id);
-    const userDoc = await user.getBydId(id)
+    const userDoc = await user.getById(id)
 
     if (!userDoc) throw new Error('User not found')
 
