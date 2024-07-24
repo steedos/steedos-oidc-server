@@ -2,7 +2,7 @@
  * @Author: 孙浩林 sunhaolin@steedos.com
  * @Date: 2024-07-21 17:34:18
  * @LastEditors: 孙浩林 sunhaolin@steedos.com
- * @LastEditTime: 2024-07-23 10:31:08
+ * @LastEditTime: 2024-07-24 09:41:37
  * @FilePath: /steedos-oidc-server/utils/user.js
  * @Description: 
  */
@@ -14,7 +14,15 @@ import consts from './consts.js'
 
 import { hashPassword } from './encryption.js'
 
-export const absoluteUrl = (url) => `${process.env.STEEDOS_ROOT_URL}${url}`
+const absoluteUrl = (url) => `${process.env.STEEDOS_ROOT_URL}${url}`
+
+const addExtraFields = (user) => {
+    if (user.avatar) {
+        user.picture = absoluteUrl(consts.AVATAR_URL + user.avatar)
+    }
+    user.given_name = user.name
+    return user
+}
 
 /**
  * 
@@ -60,9 +68,11 @@ export const login = async (login, password) => {
 
     const result = await axios.post(url, body)
 
-    console.log(result.data)
+    const user = addExtraFields(result.data.user)
 
-    return result.data.user
+    console.log(user)
+
+    return user
 }
 
 /**
@@ -83,9 +93,11 @@ export const getById = async (userId) => {
 
     const result = await axios.post(url, body)
 
-    console.log(result.data)
+    const user = addExtraFields(result.data.data)
 
-    return result.data.data
+    console.log(user)
+
+    return user
 }
 
 /**
