@@ -9,6 +9,8 @@ import { urlencoded } from 'express'; // eslint-disable-line import/no-unresolve
 import Account from '../support/account_api.js';
 import { errors } from 'oidc-provider'; // from 'oidc-provider';
 
+import { LoginError, UserNotFoundError } from '../utils/errors.js'
+
 const body = urlencoded({ extended: false });
 
 const keys = new Set();
@@ -173,7 +175,23 @@ export default (app, provider) => {
   app.use((err, req, res, next) => {
     if (err instanceof SessionNotFound) {
       // handle interaction expired / session not found error
+      return res.status(200).json({ error: 'SessionNotFound', error_description: err.message });
     }
+
+    if (err instanceof LoginError) {
+      // handle HTTP request errors
+      return res.status(200).json({ error: err.name, error_description: err.message });
+    }
+
+    if (err instanceof UserNotFoundError) {
+      // handle HTTP request errors
+      return res.status(200).json({ error: err.name, error_description: err.message });
+    }
+
+    if (err instanceof Error) {
+      return res.status(200).json({ error: err.name, error_description: err.message });
+    }
+
     next(err);
   });
 };

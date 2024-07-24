@@ -2,7 +2,7 @@
  * @Author: 孙浩林 sunhaolin@steedos.com
  * @Date: 2024-07-21 17:34:18
  * @LastEditors: 孙浩林 sunhaolin@steedos.com
- * @LastEditTime: 2024-07-24 09:41:37
+ * @LastEditTime: 2024-07-24 10:40:44
  * @FilePath: /steedos-oidc-server/utils/user.js
  * @Description: 
  */
@@ -13,6 +13,8 @@ import jwt from 'jsonwebtoken'
 import consts from './consts.js'
 
 import { hashPassword } from './encryption.js'
+
+import { LoginError, UserNotFoundError } from './errors.js'
 
 const absoluteUrl = (url) => `${process.env.STEEDOS_ROOT_URL}${url}`
 
@@ -50,29 +52,32 @@ const addExtraFields = (user) => {
     }
  */
 export const login = async (login, password) => {
+    try {
+        const body = {
+            "device_id": "",
+            "user": {
+                "email": login,
+                "mobile": "",
+                "username": "",
+                "spaceId": ""
+            },
+            "password": hashPassword(password),
+            "token": "",
+            "locale": "zh-cn"
+        }
 
-    const body = {
-        "device_id": "",
-        "user": {
-            "email": login,
-            "mobile": "",
-            "username": "",
-            "spaceId": ""
-        },
-        "password": hashPassword(password),
-        "token": "",
-        "locale": "zh-cn"
+        const url = absoluteUrl(consts.LOGIN_URL)
+
+        const result = await axios.post(url, body)
+
+        const user = addExtraFields(result.data.user)
+
+        console.log(user)
+
+        return user
+    } catch (error) {
+        throw new LoginError(error.message)
     }
-
-    const url = absoluteUrl(consts.LOGIN_URL)
-
-    const result = await axios.post(url, body)
-
-    const user = addExtraFields(result.data.user)
-
-    console.log(user)
-
-    return user
 }
 
 /**
@@ -81,23 +86,27 @@ export const login = async (login, password) => {
  * @returns user
  */
 export const getById = async (userId) => {
-    const secret = process.env.STEEDOS_OIDC_SERVER_JWT_SECRET // 密钥
-    const options = { expiresIn: 30 } // 30秒有效
-    const token = jwt.sign({
-        userId
-    }, secret, options);
+    try {
+        const secret = process.env.STEEDOS_OIDC_SERVER_JWT_SECRET // 密钥
+        const options = { expiresIn: 30 } // 30秒有效
+        const token = jwt.sign({
+            userId
+        }, secret, options);
 
-    const url = absoluteUrl(consts.GETUSERBYID_URL)
+        const url = absoluteUrl(consts.GETUSERBYID_URL)
 
-    const body = { token }
+        const body = { token }
 
-    const result = await axios.post(url, body)
+        const result = await axios.post(url, body)
 
-    const user = addExtraFields(result.data.data)
+        const user = addExtraFields(result.data.data)
 
-    console.log(user)
+        console.log(user)
 
-    return user
+        return user
+    } catch (error) {
+        throw new UserNotFoundError(error.message)
+    }
 }
 
 /**
