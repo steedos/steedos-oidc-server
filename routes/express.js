@@ -43,9 +43,9 @@ export default (app, provider) => {
     res.set('cache-control', 'no-store');
     next();
   }
-  app.get('/hello', setNoCache, async (req, res, next) => {
+  app.get('/', setNoCache, async (req, res, next) => {
     try {
-      res.send('hello world');
+      res.send('oops! something went wrong');
     } catch (err) {
       return next(err);
     }
