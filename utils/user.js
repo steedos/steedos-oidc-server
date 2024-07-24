@@ -1,8 +1,8 @@
 /*
  * @Author: 孙浩林 sunhaolin@steedos.com
  * @Date: 2024-07-21 17:34:18
- * @LastEditors: 孙浩林 sunhaolin@steedos.com
- * @LastEditTime: 2024-07-24 10:40:44
+ * @LastEditors: baozhoutao@steedos.com
+ * @LastEditTime: 2024-07-24 11:26:41
  * @FilePath: /steedos-oidc-server/utils/user.js
  * @Description: 
  */
@@ -53,6 +53,7 @@ const addExtraFields = (user) => {
  */
 export const login = async (login, password) => {
     try {
+        console.log(`login`, login, password)
         const body = {
             "device_id": "",
             "user": {
@@ -67,7 +68,6 @@ export const login = async (login, password) => {
         }
 
         const url = absoluteUrl(consts.LOGIN_URL)
-
         const result = await axios.post(url, body)
 
         const user = addExtraFields(result.data.user)

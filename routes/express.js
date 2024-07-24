@@ -107,7 +107,10 @@ export default (app, provider) => {
         },
       };
 
-      await provider.interactionFinished(req, res, result, { mergeWithLastSubmission: false });
+      // await provider.interactionFinished(req, res, result, { mergeWithLastSubmission: false });
+      const redirectTo = await provider.interactionResult(req, res, result);
+
+      res.send({ redirectTo });
     } catch (err) {
       next(err);
     }

@@ -2,7 +2,7 @@
  * @Author: 孙浩林 sunhaolin@steedos.com
  * @Date: 2024-07-16 20:06:26
  * @LastEditors: baozhoutao@steedos.com
- * @LastEditTime: 2024-07-21 17:05:05
+ * @LastEditTime: 2024-07-24 12:06:01
  * @FilePath: /steedos-oidc-server/express.js
  * @Description:
  */
@@ -31,6 +31,8 @@ const { PORT = 3000, ISSUER = `http://localhost:${PORT}`, DEBUG } = process.env;
 configuration.findAccount = Account.findAccount;
 
 const app = express();
+
+app.use(express.json());
 
 const directives = helmet.contentSecurityPolicy.getDefaultDirectives();
 delete directives['form-action'];
