@@ -2,7 +2,7 @@
  * @Author: 孙浩林 sunhaolin@steedos.com
  * @Date: 2024-07-21 17:34:18
  * @LastEditors: baozhoutao@steedos.com
- * @LastEditTime: 2024-07-24 11:26:41
+ * @LastEditTime: 2024-07-25 11:44:13
  * @FilePath: /steedos-oidc-server/utils/user.js
  * @Description: 
  */
@@ -53,7 +53,6 @@ const addExtraFields = (user) => {
  */
 export const login = async (login, password) => {
     try {
-        console.log(`login`, login, password)
         const body = {
             "device_id": "",
             "user": {
@@ -71,9 +70,6 @@ export const login = async (login, password) => {
         const result = await axios.post(url, body)
 
         const user = addExtraFields(result.data.user)
-
-        console.log(user)
-
         return user
     } catch (error) {
         throw new LoginError(error.message)
@@ -100,9 +96,6 @@ export const getById = async (userId) => {
         const result = await axios.post(url, body)
 
         const user = addExtraFields(result.data.data)
-
-        console.log(user)
-
         return user
     } catch (error) {
         throw new UserNotFoundError(error.message)
@@ -153,9 +146,6 @@ export const register = async (name, login, password) => {
     }
 
     const result = await axios.post(url, body)
-
-    console.log(result.data)
-
     return result.data.user
 }
 
@@ -172,8 +162,5 @@ export const forgetPassword = async (email) => {
     }
 
     const result = await axios.post(url, body)
-
-    console.log(result.data)
-
     return result.data
 }
