@@ -74,18 +74,23 @@ export default (app, provider) => {
           });
         }
         case 'consent': {
-          return res.render('interaction', {
-            client,
-            uid,
-            details: prompt.details,
-            params,
-            title: 'Authorize',
-            session: session ? debug(session) : undefined,
-            dbg: {
-              params: debug(params),
-              prompt: debug(prompt),
-            },
-          });
+          const skipConfirmClientIds = (process.env.SKIP_CONFIRM_CLIENT_IDS || '').split(',');
+          if (skipConfirmClientIds.includes(client.clientId)) {
+            res.redirect(`/interaction/${uid}/confirm`);
+          } else {
+            return res.render('interaction', {
+              client,
+              uid,
+              details: prompt.details,
+              params,
+              title: 'Authorize',
+              session: session ? debug(session) : undefined,
+              dbg: {
+                params: debug(params),
+                prompt: debug(prompt),
+              },
+            });
+          }
         }
         default:
           return undefined;
@@ -116,7 +121,7 @@ export default (app, provider) => {
     }
   });
 
-  app.post('/interaction/:uid/confirm', setNoCache, body, async (req, res, next) => {
+  app.all('/interaction/:uid/confirm', setNoCache, body, async (req, res, next) => {
     try {
       const interactionDetails = await provider.interactionDetails(req, res);
       const { prompt: { name, details }, params, session: { accountId } } = interactionDetails;
