@@ -2,7 +2,7 @@
  * @Author: 孙浩林 sunhaolin@steedos.com
  * @Date: 2024-07-16 20:06:26
  * @LastEditors: 孙浩林 sunhaolin@steedos.com
- * @LastEditTime: 2024-07-23 10:50:32
+ * @LastEditTime: 2024-07-28 11:14:27
  * @FilePath: /steedos-oidc-server/support/configuration.js
  * @Description:
  */
@@ -40,7 +40,7 @@ export default {
     email: ['email', 'email_verified'],
     phone: ['phone_number', 'phone_number_verified'],
     profile: ['birthdate', 'family_name', 'gender', 'given_name', 'locale', 'middle_name', 'name',
-      'nickname', 'picture', 'preferred_username', 'profile', 'updated_at', 'website', 'zoneinfo'],
+      'nickname', 'picture', 'preferred_username', 'profile', 'updated_at', 'website', 'zoneinfo', 'extra'],
   },
   features: {
     devInteractions: { enabled: false }, // defaults to true

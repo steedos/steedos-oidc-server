@@ -33,6 +33,7 @@ class Account {
         locale: this.profile.locale,
         name: this.profile.name,
         picture: this.profile.picture,
+        extra: this.profile.extra,
       };
     }
 
