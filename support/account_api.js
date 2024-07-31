@@ -26,7 +26,7 @@ class Account {
    */
   async claims(use, scope) { // eslint-disable-line no-unused-vars
     if (this.profile) {
-      return {
+      const result = {
         sub: this.accountId, // it is essential to always return a sub claim
         email: this.profile.email,
         email_verified: this.profile.email_verified,
@@ -37,6 +37,11 @@ class Account {
         picture: this.profile.picture,
         extra: this.profile.extra,
       };
+      if(scope.indexOf('phone') > -1){
+        result.phone_number = this.profile.mobile;
+        result.phone_number_verified = this.profile.mobile_verified;
+      }
+      return result;
     }
 
     return {
