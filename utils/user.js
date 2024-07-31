@@ -2,7 +2,7 @@
  * @Author: 孙浩林 sunhaolin@steedos.com
  * @Date: 2024-07-21 17:34:18
  * @LastEditors: baozhoutao@steedos.com
- * @LastEditTime: 2024-07-25 11:44:13
+ * @LastEditTime: 2024-07-31 11:48:46
  * @FilePath: /steedos-oidc-server/utils/user.js
  * @Description: 
  */
@@ -51,16 +51,39 @@ const addExtraFields = (user) => {
       id: '6556c7eccf734f2c24c6e1c0'
     }
  */
+
+function isValidEmail(login) {
+    // 邮箱格式的正则表达式
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailPattern.test(login);
+}
+
+function isValidPhoneNumber(login) {
+    // 手机号格式的正则表达式（以中国手机号为例）
+    const phonePattern = /^1[3-9]\d{9}$/;
+    return phonePattern.test(login);
+}
+
 export const login = async (login, password) => {
     try {
+        const loginUser = {
+            "email": "",
+            "mobile": "",
+            "username": "",
+            "spaceId": ""
+        }
+
+        if(isValidEmail(login)){
+            loginUser.email = login
+        }else if(isValidPhoneNumber(login)){
+            loginUser.mobile = login
+        }else{
+            loginUser.username = login
+        }
+
         const body = {
             "device_id": "",
-            "user": {
-                "email": login,
-                "mobile": "",
-                "username": "",
-                "spaceId": ""
-            },
+            "user": loginUser,
             "password": hashPassword(password),
             "token": "",
             "locale": "zh-cn"
